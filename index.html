@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="OwOBlog - Timeline">
+        <meta name="keywords" content="OwOBlog,owoblog,blog,部落格,博客,无名晓,wumingxiao,HanskiJay,Tommy131">
+        <meta name="author" content="OwOBlogTeam">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+        <title>时间进度 - OwOBlog</title>
+        <!-- <link rel="Bookmark" href="{RIMG|favicon.ico}"/>
+        <link rel="shortcut icon" href="{RIMG|favicon.ico}" type="image/x-icon"/>
+        <link rel="icon" href="{RIMG|favicon.ico}" type="image/x-icon"/> -->
+        <link rel="stylesheet" href="./css/index.css">
+        <link rel="stylesheet" href="./css/fireworks.css">
+    </head>
+    <body>
+        <div class="fireworks"></div>
+        <div class="fireworks"></div>
+        <div class="fireworks"></div>
+        <div class="stars-sky">
+            <img class="stars" src="./img/stars.svg" />
+            <img class="stars-shadow" src="./img/stars.svg" />
+        </div>
+        <div class="container">
+        <div class="inner-container">
+            <div class="header">
+                <div class="clock">
+                    <span class="hour">00</span>
+                    <span class="colon">:</span>
+                    <span class="minute">00</span>
+                    <span class="colon">:</span>
+                    <span class="second">00</span>
+                </div>
+                <div class="box center row">
+                    <div class="left"><h1>G<span id="year">2023</span>次列车时刻表</h1></div>
+                    <div class="right"><button type="button" id="clockController">暂停</button></div>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="box" id="firstPoint">
+                    <div class="top">
+                        <div class="point done">
+                            <div class="inner"></div>
+                        </div>
+                        <div class="line"></div>
+                        <div id="moveableLine"></div>
+                        <div class="time-progress" id="moveableDiv">
+                            <div class="line --adjustable"></div>
+                            <div class="point moveable --with-animation" id="moveablePoint">
+                                <div class="inner"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <span class="capsule-label"></span>
+                    </div>
+                </div>
+
+                <div class="box" id="endPoint">
+                    <div class="top">
+                        <div class="point">
+                            <div class="inner"></div>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <span class="capsule-label current-station"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="./js/index.js"></script>
+</html>
