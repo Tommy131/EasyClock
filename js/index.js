@@ -75,6 +75,7 @@ const owo = {
     clear() {
         owo.storage.removeItem('lastDate')
         owo.storage.removeItem('timeStamp')
+        owo.storage.removeItem('currentHour')
         owo.storage.removeItem('progress')
         console.log('Done.')
     }
@@ -144,7 +145,7 @@ const updateStyle = {
         let tick          = divTopWidth / 24
         progress          = progress * tick
         moveableDiv.style.width = moveablePoint.style.marginLeft = (progress <= maxWidth ? progress : 0) + 'px'
-        return maxWidth
+        return progress > maxWidth
     },
     moveableLine() {
         let unit                = 'px'
@@ -190,13 +191,13 @@ const boxController = {
         this.length = all.length
         return all
     },
-    update() {
+    update(time) {
         let all   = this.getAll()
-        let clock = owo.clock()
+        let clock = owo.clock(time)
         let today = owo.getFullDate(clock.year, clock.month, clock.date, clock.today)
         if(!owo.storage.getItem('lastDate')) {
             owo.storage.setItem('lastDate',  owo.getFullDate(clock.year, clock.month, clock.date + this.length - 1, clock.today + this.length - 1))
-            owo.storage.setItem('timeStamp', clock.obj.getTime())
+            owo.storage.setItem('timeStamp', clock.obj.getTime() / 1000000)
         }
         let last = owo.storage.getItem('lastDate')
         all.forEach((box, k) => {
@@ -222,7 +223,7 @@ const boxController = {
             }
         })
     },
-    addPoints(count) {
+    addPoints(count, time) {
         if((typeof count != 'number') || (count <= 0)) {
             return
         }
@@ -261,14 +262,16 @@ const boxController = {
             newBox.appendChild(boxBottom).appendChild(capsuleLabel)
             owo.select('.timeline').insertBefore(newBox, endPoint)
         }
+        this.update(time)
         this.update()
     }
 }
 
 // 创建始终计时器
-let progress = owo.storage.getItem('progress') ?? owo.clock().hour
+let progress    = owo.storage.getItem('progress') ?? (owo.clock().hour - 1)
+let currentHour = owo.storage.getItem('currentHour') ?? 0
+console.log(progress)
 const createClockInterval = () => {
-    let currentHour = 0
     return setInterval(() => {
         let clock  = owo.clock()
         let hour   = clock.hour
@@ -279,23 +282,25 @@ const createClockInterval = () => {
         updateStyle.moveableLine()
 
         // 判断当前小时是否发生改变 (节约性能)
-        if(currentHour === hour) {
+        if(currentHour == hour) {
             // 刷新当前时间到时钟Div
             for(e of el.clock) {
                 updateClockDiv.refresh(e.class, clock[e.name])
             }
             // 更新时间进度条
-            if(progress > updateStyle.timeProgress(progress)) {
+            if(updateStyle.timeProgress(progress)) {
                 progress = owo.clock().hour
             }
             return
+        } else {
+            progress++
+            currentHour = hour
+            owo.storage.setItem('currentHour', currentHour)
         }
-        currentHour = hour
 
         // 整点刷新所有日期
         if((hour === 0) && (minute <= 1) && (second <= 1)) {
             boxController.update()
-            progress++
         }
 
         // 设置时钟背景阴影
@@ -354,7 +359,7 @@ const createClockInterval = () => {
     }
 
     // 创建新的日期节点
-    boxController.addPoints(3)
+    boxController.addPoints(3, Math.round(parseFloat(owo.storage.getItem('timeStamp')) * 10000000))
 
     setInterval(() => {
         owo.storage.setItem('progress', progress)

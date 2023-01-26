@@ -182,7 +182,7 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    z-index: 4;
+    z-index: 2;
 }
 .time-progress .point.moveable {
     position: fixed;
