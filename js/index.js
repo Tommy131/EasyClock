@@ -50,6 +50,11 @@ const owo = {
     },
     // 返回完整格式化的日期
     getFullDate(year, month, date, day) {
+        let maxDate = (new Date(year, month, 0)).getDate()
+        if(date > maxDate) {
+            date = Math.abs(maxDate - date)
+            month++
+        }
         return this.formatDateToCN(year, month, date) + this.getDay(day)
     },
     // DOM选择器
@@ -79,6 +84,13 @@ const owo = {
         owo.storage.removeItem('progress')
         console.log('Done.')
     }
+}
+
+function testData() {
+    owo.storage.setItem('lastDate', '2023年01月29日星期日')
+    owo.storage.setItem('timeStamp', '1675011543000')
+    owo.storage.setItem('currentHour', 23)
+    owo.storage.setItem('progress', 23)
 }
 
 // 定义选择器
@@ -191,7 +203,7 @@ const boxController = {
         this.length = all.length
         return all
     },
-    update(time) {
+    update(time, forceUpdate = false) {
         let all   = this.getAll()
         let clock = owo.clock(time)
         let today = owo.getFullDate(clock.year, clock.month, clock.date, clock.today)
@@ -205,7 +217,7 @@ const boxController = {
             let point = owo.selectWith(box, '.point')
             let date  = owo.getFullDate(clock.year, clock.month, clock.date + k, clock.today + k)
 
-            if((label.innerText.length <= 0) || (last === today)) {
+            if(forceUpdate || (label.innerText.length <= 0) || (last === today)) {
                 label.innerText = date
                 label.setAttribute('title', date)
             }
@@ -290,8 +302,8 @@ const createClockInterval = () => {
             // 更新时间进度条
             if(updateStyle.timeProgress(progress)) {
                 progress = owo.clock().hour
+                boxController.update(NaN, true)
             }
-            return
         } else {
             progress++
             currentHour = hour
@@ -359,7 +371,7 @@ const createClockInterval = () => {
     }
 
     // 创建新的日期节点
-    boxController.addPoints(3, Math.round(parseFloat(owo.storage.getItem('timeStamp')) * 10000000))
+    boxController.addPoints(3, Math.round(parseFloat(owo.storage.getItem('timeStamp')) * 1000000))
 
     setInterval(() => {
         owo.storage.setItem('progress', progress)
