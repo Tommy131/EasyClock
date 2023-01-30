@@ -311,7 +311,7 @@ const createClockInterval = () => {
         }
 
         // 整点刷新所有日期
-        if((hour === 0) && (minute <= 1) && (second <= 1)) {
+        if((hour === 0) && (minute <= 5) && (second <= 5)) {
             boxController.update()
         }
 
