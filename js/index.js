@@ -230,6 +230,9 @@ const boxController = {
             else {
                 label.classList.remove('current-station')
             }
+            if(owo.clock().obj.getTime() >= (time + k * 86400000)) {
+                point.classList.add('done')
+            }
             if((last === today) && (k !== 0)) {
                 point.classList.remove('done')
             }
