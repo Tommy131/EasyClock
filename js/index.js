@@ -1,5 +1,6 @@
 // 禁止使用右键菜单
 document.oncontextmenu = () => {return false}
+document.querySelector('span#year').innerText = (new Date).getFullYear();
 
 // 定义工具方法
 const owo = {

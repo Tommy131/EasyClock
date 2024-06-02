@@ -16,7 +16,7 @@ body {
 :root {
     --preset-point-theme-color-1: #000000;
     --preset-point-theme-color-2: #3e3e3e;
-    --standard-white: rgba(255, 255, 255);
+    --standard-white: rgba(255, 255, 255); 
     --standard-gray: rgba(170, 170, 170);
     --standard-gray-transparent-50: rgba(170, 170, 170, 0.5);
     --standard-green: rgba(21, 213, 12);
